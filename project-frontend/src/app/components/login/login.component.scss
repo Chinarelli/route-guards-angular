@@ -1,0 +1,12 @@
+form {
+    margin-top: 50px;
+    .invalidField {
+        font-weight: bold;
+        color: rgb(190, 49, 49);
+    }
+    .btn {
+        width: 100px;
+        text-align: center;
+        margin: 5px;
+    }
+}
