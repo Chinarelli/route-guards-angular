@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import  {  FormControl,  FormGroup, Validators, FormBuilder  }  from  '@angular/forms';
 import { Login } from 'src/app/models/login';
+import { Observable } from 'rxjs';
+import { Auth } from 'src/app/models/auth';
+import { AuthService } from 'src/app/services/auth.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -9,9 +13,12 @@ import { Login } from 'src/app/models/login';
 })
 export class LoginComponent implements OnInit {
   formLogin: FormGroup = <any>[];
+  private auth = new Auth();
+  public auth$: Observable<Auth> = <any>[];
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) { 
 
   }
@@ -44,7 +51,10 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     console.log(this.formLogin.value);
-
+    this.auth$ = this.authService.POST(this.formLogin.value);
+    this.auth$.subscribe((data: any) => {return data});
+    this.auth = plainToClass(Models.Foo, jsonObject);
+    console.log(this.auth$);
     this.formLogin.reset(new Login());
   }
 
