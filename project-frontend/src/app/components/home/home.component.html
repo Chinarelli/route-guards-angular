@@ -1,1 +1,19 @@
-<p>home works!</p>
+<div class="content">
+    <ng-container *ngIf="users$ | async as users; else loading">      
+        <ng-container *ngIf="users.length > 0; else nothingData">
+            <ul class="list-group">
+                <li class="list-group-item active">Lista de Usuários</li>
+                <li class="list-group-item" *ngFor="let user of users">{{user.id}} - {{user.nome}}</li>
+            </ul>  
+        </ng-container>
+    </ng-container>
+    
+
+      <ng-template #loading>
+        <span>Carregando Lista...</span>
+      </ng-template>
+
+      <ng-template #nothingData>
+        <span>Não foi localizado Registros.</span>
+      </ng-template>
+</div>

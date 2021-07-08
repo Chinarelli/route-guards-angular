@@ -7,7 +7,7 @@ exports.autenticaUsuario = (req, res, next) => {
       //auth ok
       const id = 1; //esse id viria do banco de dados
       const token = jwt.sign({ id }, process.env.SECRET, {
-        expiresIn: 300 // expires in 5min
+        expiresIn: "10s" // expires in 5min
       });
       return res.json({ auth: true, token: token });
     }

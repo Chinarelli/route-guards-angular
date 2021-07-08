@@ -14,7 +14,7 @@ app.get('/', validJWT,(req, res, next) => {
     res.json({message: "Tudo ok por aqui!"});
 });
 
-app.get('/clientes', validJWT, (req, res, next) => { 
+app.get('/api/clientes', validJWT, (req, res, next) => { 
     console.log("Retornou todos clientes!");
     res.json([{id:1,nome:'chinarelli'}]);
 });
@@ -26,5 +26,5 @@ const server = http.createServer(app);
 server.listen(3000);
 console.log("Servidor escutando na porta 3000...")
 
+
 //https://medium.com/@ryanchenkie_40935/angular-authentication-using-route-guards-bf7a4ca13ae3
-//https://www.luiztools.com.br/post/autenticacao-json-web-token-jwt-em-nodejs/

@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import  {  FormControl,  FormGroup, Validators, FormBuilder  }  from  '@angular/forms';
 import { Login } from 'src/app/models/login';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Auth } from 'src/app/models/auth';
 import { AuthService } from 'src/app/services/auth.service';
 import { map } from 'rxjs/operators';
+import { plainToClass } from 'class-transformer';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,11 +17,14 @@ import { map } from 'rxjs/operators';
 export class LoginComponent implements OnInit {
   formLogin: FormGroup = <any>[];
   private auth = new Auth();
-  public auth$: Observable<Auth> = <any>[];
+  public auth$: Promise<Auth> = <any>[];
+  erroLogin: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private stroge: LocalStorageService,
+    private router: Router
   ) { 
 
   }
@@ -49,16 +55,24 @@ export class LoginComponent implements OnInit {
     return this.formLogin.get('password');
   }
 
-  onSubmit() {
-    console.log(this.formLogin.value);
-    this.auth$ = this.authService.POST(this.formLogin.value);
-    this.auth$.subscribe((data: any) => {return data});
-    this.auth = plainToClass(Models.Foo, jsonObject);
-    console.log(this.auth$);
-    this.formLogin.reset(new Login());
+  async onSubmit() {
+    try {
+      this.stroge.clear();
+      this.erroLogin = false;
+      this.auth$ = this.authService.POST(this.formLogin.value);
+      let token = (await this.auth$).token;
+      if(token) {
+        this.stroge.set('token', token);
+        this.router.navigate(['/home']);
+      }
+      this.formLogin.reset(new Login());
+    } catch {
+      this.erroLogin = true;
+    } 
   }
 
-  Clear() {
-    this.formLogin.reset(new Login());
+  Clear() {  
+    this.erroLogin = false;
+    this.formLogin.reset();
   }
 }

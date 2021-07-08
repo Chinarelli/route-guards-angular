@@ -1,21 +1,23 @@
-<form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
-
-    <div class="form-group">
-        <label for="user">User</label>      
-        <input type="text" class="form-control" name="user" id="user" formControlName="user">
-        <div *ngIf="user.errors && (user.dirty || user.touched)">
-			<p class="invalidField" *ngIf="user.errors.required">User is required</p>
+<div class="content">
+    <form [formGroup]="formLogin" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="user">User</label>      
+            <input type="text" class="form-control" name="user" id="user" formControlName="user">
+            <div *ngIf="user.errors && (user.dirty || user.touched)">
+                <p class="invalidField" *ngIf="user.errors.required">User is required</p>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="password">Senha</label>
-        <input type="password" class="form-control" name="password" id="password" formControlName="password">
-        <div *ngIf="password.errors && (password.dirty || password.touched)">
-			<p class="invalidField" *ngIf="password.errors.required">Password is required</p>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-outline-primary mt-4" [disabled]="!formLogin.valid">Entrar</button>
-    <button class="btn btn-outline-danger mt-4 ml-2" (click)="Clear()">Cancelar</button>  
-
-    
-</form>
+        <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" class="form-control" name="password" id="password" formControlName="password">
+            <div *ngIf="password.errors && (password.dirty || password.touched)">
+                <p class="invalidField" *ngIf="password.errors.required">Password is required</p>
+            </div>
+        </div>        
+        <button type="submit" class="btn btn-outline-primary mt-4" [disabled]="!formLogin.valid">Entrar</button>
+        <a class="btn btn-outline-danger mt-4 ml-2" (click)="Clear()">Cancelar</a> 
+        <div class="invalidLogin" *ngIf="erroLogin">
+            <p class="invalidField">Invalid credentials.</p>
+        </div>           
+    </form>
+</div>
